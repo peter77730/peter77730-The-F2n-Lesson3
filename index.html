@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Peter Chen">
+    <meta name="robots" content="index,follow">
+    <title></title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    <link rel="stylesheet" href="./scss/custom.css">
+</head>
+<body class="bg-success">
+    <!-- 導覽列 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img src="./pic/logo_w.svg" alt="logo" class="d-inline-block">
+            </a>
+            <button class="navbar-toggler btn btn-outline-warning" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse"></div>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#busInfo" role="button" aria-expanded="false" aria-controls="collapseExample" class="nav-link text-light busInfo">查詢公車動態</a>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#busSearch" role="button" aria-expanded="false" aria-controls="collapseExample" class="nav-link text-light busSearch">站點查詢</a>
+                    </li>
+                    <li class="nav-item">
+                        <a data-bs-toggle="collapse" href="#nearbyBus" role="button" aria-expanded="false" aria-controls="collapseExample" class="nav-link text-light nearbyBus">附近站牌</a>
+                    </li>
+                 </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="collapse" id="busInfo">
+        <div class="d-flex">
+            <div class="col-4 col-md-2 card card-body p-0">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary">請選擇</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" data-bs-reference="parent" aria-expanded="false">
+                         <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-start">
+                         <li value="Taipei" class="citySelect" name="台北市"><a class="dropdown-item busSelect" href="#">台北市</a></li>
+                         <li value="NewTaipei" class="citySelect" name="新北市"><a class="dropdown-item" href="#">新北市</a></li>
+                         <li value="Taoyuan" class="citySelect" name="桃園市"><a class="dropdown-item" href="#">桃園市</a></li>
+                         <li value="Taichung" class="citySelect" name="台中市"><a class="dropdown-item" href="#">台中市</a></li>
+                         <li value="Tainan" class="citySelect" name="台南市"><a class="dropdown-item" href="#">台南市</a></li>
+                         <li value="Kaohsiung" class="citySelect" name="高雄市"><a class="dropdown-item" href="#">高雄市</a></li>
+                         <li value="Keelung" class="citySelect" name="基隆市"><a class="dropdown-item" href="#">基隆市</a></li>
+                         <li value="Hsinchu" class="citySelect" name="新竹市"><a class="dropdown-item" href="#">新竹市</a></li>
+                         <li value="HsinchuCounty" class="citySelect" name="新竹縣"><a class="dropdown-item" href="#">新竹縣</a></li>
+                         <li value="MiaoliCounty" class="citySelect" name="苗栗縣"><a class="dropdown-item" href="#">苗栗縣</a></li>
+                         <li value="ChanghuaCounty" class="citySelect" name="彰化縣"><a class="dropdown-item" href="#">彰化縣</a></li>
+                         <li value="NantouCounty" class="citySelect" name="南投縣"><a class="dropdown-item" href="#">南投縣</a></li>
+                         <li value="YunlinCounty" class="citySelect" name="雲林縣"><a class="dropdown-item" href="#">雲林縣</a></li>
+                         <li value="ChiayiCounty" class="citySelect" name="嘉義縣"><a class="dropdown-item" href="#">嘉義縣</a></li>
+                         <li value="Chiayi" class="citySelect" name="屏東縣"><a class="dropdown-item" href="#">屏東縣</a></li>
+                         <li value="PingtungCounty" class="citySelect" name="宜蘭縣"><a class="dropdown-item" href="#">宜蘭縣</a></li>
+                         <li value="YilanCounty" class="citySelect" name="花蓮縣"><a class="dropdown-item" href="#">花蓮縣</a></li>
+                         <li value="HualienCounty" class="citySelect" name="台東縣"><a class="dropdown-item" href="#">台東縣</a></li>
+                         <li value="TaitungCounty" class="citySelect" name="金門縣"><a class="dropdown-item" href="#">金門縣</a></li>
+                         <li value="KinmenCounty" class="citySelect" name="雲林縣"><a class="dropdown-item" href="#">雲林縣</a></li>
+                         <li value="PenghuCounty" class="citySelect" name="澎湖縣"><a class="dropdown-item" href="#">澎湖縣</a></li>
+                         <li value="LienchiangCounty" class="citySelect" name="連江縣"><a class="dropdown-item" href="#">連江縣</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-8 col-md-10">
+                <input class="form-control BusKeyWord" type="text" placeholder="請輸入關鍵字" aria-label="default input example">
+            </div>
+        </div>      
+    </div>
+    <div class="collapse" id="busSearch">
+        <div class="d-flex">
+            <div class="col-4 col-md-2 card card-body p-0">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary">請選擇</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" data-bs-reference="parent" aria-expanded="false">
+                         <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-start">
+                         <li value="Taipei" class="citySelect" name="台北市"><a class="dropdown-item busSelect" href="#">台北市</a></li>
+                         <li value="NewTaipei" class="citySelect" name="新北市"><a class="dropdown-item" href="#">新北市</a></li>
+                         <li value="Taoyuan" class="citySelect" name="桃園市"><a class="dropdown-item" href="#">桃園市</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-8 col-md-10">
+                <input class="form-control BusKeyWord2" type="text" placeholder="請輸入關鍵字" aria-label="default input example">
+            </div>
+        </div>      
+    </div>
+    <div class="collapse" id="nearbyBus">
+        <!-- <div class="d-flex">
+            <div class="col-4 col-md-2 card card-body p-0">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-primary">請選擇</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" data-bs-reference="parent" aria-expanded="false">
+                         <span class="visually-hidden">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-start">
+                         <li value="Taipei" class="citySelect" name="台北市"><a class="dropdown-item busSelect" href="#">台北市</a></li>
+                         <li value="NewTaipei" class="citySelect" name="新北市"><a class="dropdown-item" href="#">新北市</a></li>
+                         <li value="Taoyuan" class="citySelect" name="桃園市"><a class="dropdown-item" href="#">桃園市</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-8 col-md-10">
+                <input class="form-control BusKeyWord3" type="text" placeholder="請輸入關鍵字" aria-label="default input example">
+            </div>
+        </div>   -->
+    </div>
+
+      <!-- 主內容 -->
+      <!-- 地區搜尋 -->
+    <div class="container citySearch">
+        <div class="row">
+            <div class="col-12 d-flex align-items-end cityName">
+                <!-- <h1 class="pe-3 text-center">高雄市</h1>
+                <h4 class="text-center h5">全部路線</h4> -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 d-flex flex-wrap formInit">
+                <!-- <a class="btn btn-borderColor btn-lg m-2 border-secondary shadow-sm" href="#" role="button">Link</a>
+                <a class="btn btn-borderColor btn-lg m-2 border-secondary shadow-sm" href="#" role="button">Link</a>
+                <a class="btn btn-borderColor btn-lg m-2 border-secondary shadow-sm" href="#" role="button">Link</a> -->
+            </div>          
+        </div>
+    </div>
+    <!-- 附近站牌-->
+    <div class="container locolBusStation">
+        <div class="row">
+            <div class="col-12 col-md-4 d-flex d-flex flex-column py-3">
+                <div class="col-12 d-flex align-items-end nearbyBusTitle">
+                    <!-- <h1 class="pe-4 text-center h4">附近站牌</h1>
+                    <h4 class="text-center h6">距離 200m</h4> -->
+                </div>
+                <div class="col-12 d-flex flex-column nearbyBusCard">
+                    <!-- <div class="card w-100">
+                        <div class="card-body">
+                            <a href="#" class="text-decoration-none">
+                                <h2 class="card-title h3 text-secondary">龍總射門</h2>
+                                <h5 class="card-text h6 text-secondary"><span class="text-primary">6 </span>個公車路線</h5>
+                                <h5 class="card-text h6 text-secondary"><span class="text-primary">45 </span>m</h5>
+                            </a>  
+                        </div>                        
+                    </div> -->
+                </div>
+            </div>
+            <div class="col-12 col-md-8 d-flex p-3">
+                
+                <div class="w-100" id="mapid" style="height: 450px;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- footer -->
+    <footer class="d-flex justify-content-center align-item-center p-1 bg-dark text-light">
+      <div class="d-flex justify-content-center align-item-center text-center m-1">
+        <img src="./pic/copyright.svg" alt="copyright">
+        <p class="small text-secondary m-2 text-light">Design by Yuco</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+     <!-- Make sure you put this AFTER Leaflet's CSS -->
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+ integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+ crossorigin=""></script>
+     <!-- axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- jsSHA -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/3.2.0/sha.js"></script>
+    <!-- wicket -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wicket/1.3.8/wicket.min.js" integrity="sha512-aaiN+QIXD0N9Id865vSDEfttZJV9v8ZGh7jXMnYI2zbZhkSYOulS4IH0u4pC61/KXT20UedYzL5xi5siIg6mlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./custom.js"></script>
+</body>
+</html>
